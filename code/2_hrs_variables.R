@@ -42,16 +42,16 @@ stroke_vars <- select(.data = hrs_respondents,
 
 functional_vars <- select(.data = hrs_respondents,
                           hhidpn,
-                          r2mobila:r12mobila,
-                          r2lgmusa:r12lgmusa,
-                          r2adla:r12adla,
+													r2adla:r12adla,
                           r2adlwa:r12adlwa,
+													r2finea:r12finea,
+												  r2grossa:r12grossa,
                           r2iadla:r12iadla,
                           ends_with(match = "iadlza",
                                     ignore.case = TRUE,
                                     vars = current_vars()),
-                          r2grossa:r12grossa,
-                          r2finea:r12finea)
+													r2lgmusa:r12lgmusa,
+                          r2mobila:r12mobila)
 
 # Select other health variables.
 
