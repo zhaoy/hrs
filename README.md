@@ -30,7 +30,7 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 
 2. Download the raw data. From inside the raw data folder, copy-paste or cut-paste `rndhrs_p.sav` to the root directory of this repository.
 
-3. In this repository, run `makefile.R`. If you want to open it before running it, use the file browser / manager / system of the computer instead of the "File" menu in R or RStudio. Suggested methods:
+3. In this repository, run `makefile.R`. If you want to open it before running it, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
 
 * Double-click on `makefile.R`.
 * Select `makefile.R`, right-click, and left-click on "Open".
