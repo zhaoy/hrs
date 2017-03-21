@@ -48,9 +48,13 @@ hrs_variables <- read_tsv(file = import_path,
                           progress = TRUE)
 
 # Select first-time-stroke interviews:
-# 1) stroke in current interviews
-# 2) no history of stroke per previous interviews
-# 3) exclude first or last interviews
+# 1) identify first and last interviews
+# 2) stroke in current interviews
+# 3) no history of stroke per previous interviews
+# 4) first stroke
+# 5) exclude first or last interviews
+
+# Identify first and last interviews.
 
 strok_range <- hrs_variables %>%
   select(hhidpn,
@@ -58,7 +62,7 @@ strok_range <- hrs_variables %>%
   gather(key = strok_wave,
          value = strok_status,
          r1strok:r12strok,
-         na.rm = TRUE,
+         na.rm = FALSE,
          convert = FALSE,
          factor_key = FALSE)
 
@@ -84,10 +88,11 @@ strok_interviews <- hrs_variables %>%
          factor_key = FALSE) %>%
   filter(strok_status == 1) %>%
   group_by(hhidpn) %>%
-  filter(strok_wave == head(strok_wave,
-                            n = 1))
+  filter(strok_wave == head(x = strok_wave,
+                            n = 1,
+                            addrownums = FALSE))
 
-# first yes response to ever had stroke
+# no history of stroke per previous interviews: first yes response to ever had stroke
 
 ever_stroke_yes <- hrs_variables %>%
   select(hhidpn,
@@ -100,10 +105,11 @@ ever_stroke_yes <- hrs_variables %>%
          factor_key = FALSE) %>%
   filter(stroke_status_yes == 1) %>%
   group_by(hhidpn) %>%
-  filter(stroke_wave_yes == head(stroke_wave_yes,
-                                 n = 1))
+  filter(stroke_wave_yes == head(x = stroke_wave_yes,
+                                 n = 1,
+                                 addrownums = FALSE))
 
-# last no response to ever had stroke
+# first stroke: last no response to ever had stroke
 
 ever_stroke_no <- hrs_variables %>%
   select(hhidpn,
@@ -116,10 +122,11 @@ ever_stroke_no <- hrs_variables %>%
          factor_key = FALSE) %>%
   filter(stroke_status_no == 0) %>%
   group_by(hhidpn) %>%
-  filter(stroke_wave_no == tail(stroke_wave_no,
-                                n = 1))
+  filter(stroke_wave_no == tail(x = stroke_wave_no,
+                                n = 1,
+                                addrownums = FALSE))
 
-# not first or last interviews
+# Exclude first or last interviews.
 
 hrs_interviews <- list(strok_range,
                        strok_interviews,
@@ -136,11 +143,11 @@ hrs_interviews$stroke_wave_no <- wave(string = hrs_interviews$stroke_wave_no)
 hrs_interviews <- hrs_interviews %>%
   filter(strok_wave > first_interview,
          strok_wave < last_interview) %>%
-  mutate(compare = ifelse(test = (strok_wave > stroke_wave_no) &
-                                 (strok_wave <= stroke_wave_yes),
-                          yes = TRUE,
-                          no = FALSE)) %>%
-  filter(compare == TRUE) %>%
+  mutate(compare_wave = ifelse(test = (strok_wave > stroke_wave_no) &
+                                      (strok_wave <= stroke_wave_yes),
+                               yes = TRUE,
+                               no = FALSE)) %>%
+  filter(compare_wave == TRUE) %>%
   select(hhidpn,
          stroke_interview = strok_wave,
          last_interview)
