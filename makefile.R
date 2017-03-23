@@ -26,7 +26,7 @@ map(.x = hrs_code,
 # Remove intermediate data.
 
 hrs_intermediates <- c("1_hrs_respondents.tsv", # 1_hrs_respondents.R
-	                     "2_hrs_variables.tsv",   # 2_hrs_variables.R
-	                     "3_hrs_interviews.tsv")  # 3_hrs_interviews.R
+                       "2_hrs_variables.tsv",   # 2_hrs_variables.R
+                       "3_hrs_interviews.tsv")  # 3_hrs_interviews.R
 
 file.remove(hrs_intermediates)
