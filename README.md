@@ -46,7 +46,11 @@ row  col     expected   actual
 
 ```
 Warning messages:
+
 In ifelse(test = is.na(x = as.numeric(x = string)) == TRUE,
 yes = str_sub(string = string, :
+NAs introduced by coercion
+
+In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE, :
 NAs introduced by coercion
 ```
