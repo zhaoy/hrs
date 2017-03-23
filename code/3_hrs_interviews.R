@@ -22,7 +22,7 @@ wave <- function(string) {
   return(value = string)
 }
 
-# Locate variables data.
+# Locate in-put data.
 
 root_path <- find_root(criterion = "README.md",
                        path = ".")
@@ -32,7 +32,7 @@ import_path <- paste(root_path,
                      sep = "",
                      collapse = "")
 
-# Import variables data.
+# Import in-put data.
 
 hrs_variables <- read_tsv(file = import_path,
                           col_names = TRUE,
@@ -51,8 +51,7 @@ hrs_variables <- read_tsv(file = import_path,
 # 1) identify first and last interviews
 # 2) stroke in current interviews
 # 3) no history of stroke per previous interviews
-# 4) first stroke
-# 5) exclude first or last interviews
+# 4) exclude first and last interviews
 
 # Identify first and last interviews.
 
@@ -109,7 +108,7 @@ ever_stroke_yes <- hrs_variables %>%
                                  n = 1,
                                  addrownums = FALSE))
 
-# first stroke: last no response to ever had stroke
+# no history of stroke per previous interviews: last no response to ever had stroke
 
 ever_stroke_no <- hrs_variables %>%
   select(hhidpn,
@@ -126,7 +125,7 @@ ever_stroke_no <- hrs_variables %>%
                                 n = 1,
                                 addrownums = FALSE))
 
-# Exclude first or last interviews.
+# Exclude first and last interviews.
 
 hrs_interviews <- list(strok_range,
                        strok_interviews,
