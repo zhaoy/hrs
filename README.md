@@ -39,5 +39,7 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 As `makefile.R` runs, ignore this warning message if it appears:
 
 ```
-Warning message: In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE,: NAs introduced by coercion
+Warning message:
+In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE,:
+NAs introduced by coercion
 ```
