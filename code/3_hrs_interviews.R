@@ -62,7 +62,7 @@ strok_range <- hrs_variables %>%
   gather(key = strok_wave,
          value = strok_status,
          r1strok:r12strok,
-         na.rm = FALSE,
+         na.rm = TRUE,
          convert = FALSE,
          factor_key = FALSE)
 
@@ -83,7 +83,7 @@ strok_interviews <- hrs_variables %>%
   gather(key = strok_wave,
          value = strok_status,
          r1strok:r12strok,
-         na.rm = FALSE,
+         na.rm = TRUE,
          convert = FALSE,
          factor_key = FALSE) %>%
   filter(strok_status == 1) %>%
@@ -100,7 +100,7 @@ ever_stroke_yes <- hrs_variables %>%
   gather(key = stroke_wave_yes,
          value = stroke_status_yes,
          r1stroke:r12stroke,
-         na.rm = FALSE,
+         na.rm = TRUE,
          convert = FALSE,
          factor_key = FALSE) %>%
   filter(stroke_status_yes == 1) %>%
@@ -117,7 +117,7 @@ ever_stroke_no <- hrs_variables %>%
   gather(key = stroke_wave_no,
          value = stroke_status_no,
          r1stroke:r12stroke,
-         na.rm = FALSE,
+         na.rm = TRUE,
          convert = FALSE,
          factor_key = FALSE) %>%
   filter(stroke_status_no == 0) %>%

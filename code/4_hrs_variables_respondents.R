@@ -22,7 +22,7 @@ wave <- function(string) {
   return(value = string)
 }
 
-variable <- function(string) {
+concept <- function(string) {
   string <- str_sub(string = string,
                     start = 3,
                     end = -1)
@@ -62,23 +62,23 @@ hrs_interviews <- read_tsv(file = import_path,
                            guess_max = 1000,
                            progress = TRUE)
 
-# Select dependent variables and last interview date.
+# Select dependent variables.
 
 dependent_vars <- hrs_interviews %>%
   select(hhidpn,
          last_interview,
          r1iwbeg:r12iwbeg,
          r2adla:r12adla,
-         r2grossa:r12grossa,
-         r2finea:r12finea) %>%
+         r2finea:r12finea,
+         r2grossa:r12grossa) %>%
   gather(key = dependent_wave,
          value = dependent_status,
-         r1iwbeg:r12finea,
-         na.rm = TRUE,
+         r1iwbeg:r12grossa,
+         na.rm = FALSE,
          convert = FALSE,
          factor_key = FALSE)
 
-dependent_vars$dependent_concept <- variable(string = dependent_vars$dependent_wave)
+dependent_vars$dependent_concept <- concept(string = dependent_vars$dependent_wave)
 dependent_vars$dependent_wave <- wave(string = dependent_vars$dependent_wave)
 
 dependent_vars <- dependent_vars %>%
@@ -120,7 +120,7 @@ independent_vars <- hrs_interviews %>%
          convert = FALSE,
          factor_key = FALSE)
 
-independent_vars$independent_concept <- variable(string = independent_vars$independent_wave)
+independent_vars$independent_concept <- concept(string = independent_vars$independent_wave)
 independent_vars$independent_wave <- wave(string = independent_vars$independent_wave)
 
 independent_vars <- independent_vars %>%
@@ -135,6 +135,9 @@ independent_vars <- independent_vars %>%
 independent_vars$iwbeg <- as.Date(x = independent_vars$iwbeg,
                                   origin = "1960-01-01")
 
+comorbidity_range <- c(0,
+                       1)
+
 comorbidity_vars <- independent_vars %>%
   select(hhidpn,
          bmi,
@@ -143,10 +146,10 @@ comorbidity_vars <- independent_vars %>%
          hibp,
          smoken) %>%
   filter(is.na(x = bmi) == FALSE,
-         is.na(x = diab) == FALSE,
-         is.na(x = heart) == FALSE,
-         is.na(x = hibp) == FALSE,
-         is.na(x = smoken) == FALSE) %>%
+         diab %in% comorbidity_range,
+         heart %in% comorbidity_range,
+         hibp %in% comorbidity_range,
+         smoken %in% comorbidity_range) %>%
   mutate(bmi_30 = ifelse(test = bmi > 30,
                          yes = 1,
                          no = 0),
@@ -160,6 +163,8 @@ comorbidity_vars <- independent_vars %>%
   select(hhidpn,
          comorbidity_score)
 
+# Join variables.
+
 hrs_variables_respondents <- inner_join(x = dependent_vars,
                                         y = independent_vars,
                                         by = "hhidpn",
@@ -168,7 +173,8 @@ hrs_variables_respondents <- inner_join(x = dependent_vars,
                                                    "_stroke")) %>%
   mutate(diff_time = as.numeric(x = difftime(time1 = iwbeg_last,
                                              time2 = iwbeg_stroke,
-                                             units = "weeks")) / 52)
+                                             units = "weeks")) /
+                                             52)
 
 hrs_variables_respondents <- inner_join(x = hrs_variables_respondents,
                                         y = comorbidity_vars,

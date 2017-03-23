@@ -35,3 +35,9 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 * Double-click on `makefile.R`.
 * Select `makefile.R`, right-click, and left-click on "Open".
 * Select `makefile.R`, right-click, hover over "Open With", and left-click on R or RStudio.
+
+As `makefile.R` runs, ignore this warning message if it appears:
+
+```
+Warning message: In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE,: NAs introduced by coercion
+```
