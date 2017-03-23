@@ -37,7 +37,7 @@ concept <- function(string) {
   return(value = string)
 }
 
-# Locate interviews data.
+# Locate in-put data.
 
 root_path <- find_root(criterion = "README.md",
                        path = ".")
@@ -47,7 +47,7 @@ import_path <- paste(root_path,
                      sep = "",
                      collapse = "")
 
-# Import variables data.
+# Import in-put data.
 
 hrs_interviews <- read_tsv(file = import_path,
                            col_names = TRUE,
@@ -74,7 +74,7 @@ dependent_vars <- hrs_interviews %>%
   gather(key = dependent_wave,
          value = dependent_status,
          r1iwbeg:r12grossa,
-         na.rm = FALSE,
+         na.rm = TRUE,
          convert = FALSE,
          factor_key = FALSE)
 
@@ -163,7 +163,7 @@ comorbidity_vars <- independent_vars %>%
   select(hhidpn,
          comorbidity_score)
 
-# Join variables.
+# Join variables and respondents.
 
 hrs_variables_respondents <- inner_join(x = dependent_vars,
                                         y = independent_vars,
