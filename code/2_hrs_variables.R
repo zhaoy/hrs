@@ -5,7 +5,7 @@ library(package = readr)     # import and export data
 library(package = dplyr)     # transform data
 library(package = purrr)     # functional programming tools
 
-# Locate respondents data.
+# Locate in-put data.
 
 root_path <- find_root(criterion = "README.md",
                        path = ".")
@@ -15,7 +15,7 @@ import_path <- paste(root_path,
                      sep = "",
                      collapse = "")
 
-# Import respondents data.
+# Import in-put data.
 
 hrs_respondents <- read_tsv(file = import_path,
                             col_names = TRUE,
@@ -67,9 +67,9 @@ health_vars <- select(.data = hrs_respondents,
 
 demographic_vars <- select(.data = hrs_respondents,
                            hhidpn,
-                           r1iwbeg:r12iwbeg,
                            r1agey_b:r12agey_b,
                            ragender,
+                           r1iwbeg:r12iwbeg,
                            raracem)
 
 # Select financial and housing wealth variables.

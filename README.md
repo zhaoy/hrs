@@ -1,4 +1,4 @@
-Computer code for a manuscript.
+Computer code for a JAHA manuscript.
 
 ## Raw Data
 
@@ -40,6 +40,6 @@ As `makefile.R` runs, ignore this warning message if it appears:
 
 ```
 Warning message:
-In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE,:
+In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE, :
 NAs introduced by coercion
 ```
