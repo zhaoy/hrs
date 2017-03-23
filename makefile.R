@@ -19,7 +19,6 @@ map(.x = hrs_code,
     .f = source,
     local = FALSE,
     echo = FALSE,
-    print.eval = FALSE,
     verbose = FALSE,
     chdir = TRUE)
 
