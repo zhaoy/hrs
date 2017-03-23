@@ -36,10 +36,17 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 * Select `makefile.R`, right-click, and left-click on "Open".
 * Select `makefile.R`, right-click, hover over "Open With", and left-click on R or RStudio.
 
-As `makefile.R` runs, ignore this warning message if it appears:
+As `makefile.R` runs, ignore these warning messages if they appear:
 
 ```
-Warning message:
-In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE, :
+Warning: 1 parsing failure.
+row  col     expected   actual
+2267 ravetrn an integer NaN
+```
+
+```
+Warning messages:
+In ifelse(test = is.na(x = as.numeric(x = string)) == TRUE,
+yes = str_sub(string = string, :
 NAs introduced by coercion
 ```
