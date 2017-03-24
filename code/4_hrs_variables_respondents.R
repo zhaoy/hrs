@@ -184,7 +184,7 @@ hrs_variables_respondents <- inner_join(x = hrs_variables_respondents,
 # Set export location.
 
 export_path <- paste(root_path,
-                     "/hrs_analysis.tsv",
+                     "/hrs.tsv",
                      sep = "",
                      collapse = "")
 
