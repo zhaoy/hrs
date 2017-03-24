@@ -30,7 +30,7 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 
 2. Download the raw data. From inside the raw data folder, copy-paste or cut-paste `rndhrs_p.sav` to the root directory of this repository.
 
-3. Run `makefile.R` to generate the analysis data-set. If you want to open it before running it, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
+3. Run `makefile.R` to generate the analysis data-set, `hrs.tsv`. If you want to open it before running it, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
 
 * Double-click on `makefile.R`.
 * Select `makefile.R`, right-click, and left-click on "Open".
@@ -55,4 +55,4 @@ In ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE, :
 NAs introduced by coercion
 ```
 
-The analysis data-set should appear in the root directory of this repository.
+The analysis data-set, `hrs.tsv`, should appear in the root directory of this repository.
