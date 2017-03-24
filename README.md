@@ -30,7 +30,9 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 
 2. Download the raw data. From inside the raw data folder, copy-paste or cut-paste `rndhrs_p.sav` to the root directory of this repository.
 
-3. Run `makefile.R` to generate the analysis data-set, which should appear in the root directory of this repository as `hrs.tsv`. To open `makefile.R`, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
+3. Run `makefile.R` to generate the analysis data-set, which should appear in the root directory of this repository as `hrs.tsv`.
+
+To open `makefile.R`, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
 
 * Double-click on `makefile.R`.
 * Select `makefile.R`, right-click, and left-click on "Open".
