@@ -32,7 +32,7 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 
 3. In this repository, run `makefile.R` to generate the analysis data-set (`hrs.tsv`) and analysis report (`hrs.html`). After `makefile.R` runs, `hrs.tsv` and `hrs.html` should appear in the root directory.
 
-To open `makefile.R`, or another R file in this repository, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
+To open in R or [RStudio](https://www.rstudio.com) a R file that is in this repository, use the file browser / manager / system of the computer instead of the "File" menu in R or RStudio. Suggested methods:
 
 * Double-click on the file.
 * Select the file, right-click, and left-click on "Open".
