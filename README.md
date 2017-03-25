@@ -30,13 +30,13 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 
 2. Download the raw data. From inside the raw data folder, copy-paste or cut-paste `rndhrs_p.sav` to the root directory of this repository.
 
-3. Run `makefile.R` to generate the analysis data-set (`hrs.tsv`) and analysis report (`hrs.html`). Both should appear in the root directory of this repository.
+3. In this repository, run `makefile.R` to generate the analysis data-set (`hrs.tsv`) and analysis report (`hrs.html`). After `makefile.R` runs, `hrs.tsv` and `hrs.html` should appear in the root directory.
 
-To open `makefile.R`, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
+To open `makefile.R`, or another R file in this repository, use the file browser / manager / system of the computer instead of the "File" menu in R or [RStudio](https://www.rstudio.com). Suggested methods:
 
-* Double-click on `makefile.R`.
-* Select `makefile.R`, right-click, and left-click on "Open".
-* Select `makefile.R`, right-click, hover over "Open With", and left-click on R or RStudio.
+* Double-click on the file.
+* Select the file, right-click, and left-click on "Open".
+* Select the file, right-click, hover over "Open With", and left-click on R or RStudio.
 
 As `makefile.R` runs, ignore these warning messages:
 
