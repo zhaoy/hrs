@@ -8,6 +8,8 @@ library(package = rmarkdown) # dynamic documents
 root_path <- find_root(criterion = "README.md",
                        path = ".")
 
+# Run code.
+
 render(input = "5_hrs.Rmd",
        output_format = NULL,
        output_file = NULL,
