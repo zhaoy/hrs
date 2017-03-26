@@ -3,12 +3,12 @@
 library(package = rprojroot) # find absolute file-path of root directory
 library(package = rmarkdown) # dynamic documents
 
-# Locate code.
+# Locate Rmarkdown (Rmd) file.
 
 root_path <- find_root(criterion = "README.md",
                        path = ".")
 
-# Run code.
+# Run Rmarkdown (Rmd) file.
 
 render(input = "5_hrs.Rmd",
        output_format = NULL,
