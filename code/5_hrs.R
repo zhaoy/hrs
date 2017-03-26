@@ -3,7 +3,7 @@
 library(package = rprojroot) # find absolute file-path of root directory
 library(package = rmarkdown) # dynamic documents
 
-# Locate Rmarkdown (Rmd) file.
+# Locate root directory of Rmarkdown (Rmd) file.
 
 root_path <- find_root(criterion = "README.md",
                        path = ".")
