@@ -16,13 +16,13 @@ Computer code for a JAHA manuscript.
 
 **Language**: [R](https://www.r-project.org)
 
-**Version**: 3.3.3
+**Version**: 3.4
 
 **Packages**:
 
 [tidyverse](https://mran.microsoft.com/package/tidyverse) packages: [dplyr](https://mran.microsoft.com/package/dplyr), [haven](https://mran.microsoft.com/package/haven), [purrr](https://mran.microsoft.com/package/purrr), [readr](https://mran.revolutionanalytics.com/package/readr), [stringr](https://mran.microsoft.com/package/stringr), [tidyr](https://mran.revolutionanalytics.com/package/tidyr)
 
-Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](https://mran.microsoft.com/package/rmarkdown), [rprojroot](https://mran.microsoft.com/package/rprojroot)
+Other packages: [rmarkdown](https://mran.microsoft.com/package/rmarkdown), [rprojroot](https://mran.microsoft.com/package/rprojroot)
 
 ## Reproducibility
 
@@ -34,9 +34,9 @@ Other packages: [knitr](https://mran.microsoft.com/package/knitr), [rmarkdown](h
 
 To open in R or [RStudio](https://www.rstudio.com) a R file that is in this repository, use the file browser / manager / system of the computer instead of the "File" menu in R or RStudio. Suggested methods:
 
-* Double-click on the file.
-* Select the file, right-click, and left-click on "Open".
 * Select the file, right-click, hover over "Open With", and left-click on R or RStudio.
+* Select the file, right-click, and left-click on "Open".
+* Double-click on the file.
 
 As `makefile.R` runs, ignore these warning messages:
 
