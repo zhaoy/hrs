@@ -1,20 +1,19 @@
 # Load packages in order of use.
 
-library(package = rprojroot) # find absolute file-path of root directory
+library(package = rprojroot) # find files in project sub-directories
 library(package = haven)     # import SPSS file
-library(package = dplyr)     # transform data
+library(package = dplyr)     # data manipulation
 library(package = purrr)     # functional programming tools
-library(package = readr)     # export data
+library(package = readr)     # read tabular data
 
 # Locate raw data.
 
 root_path <- find_root(criterion = "README.md",
                        path = ".")
 
-import_path <- paste(root_path,
-                     "/rndhrs_p.sav",
-                     sep = "",
-                     collapse = "")
+import_path <- paste0(root_path,
+                      "/rndhrs_p.sav",
+                      collapse = NULL)
 
 # Import raw data.
 
@@ -45,12 +44,13 @@ ever_stroke <- hrs_respondents %>%
   select(hhidpn,
          r1strok:r12strok,
          r1stroke:r12stroke,
-         r2stroks:r12stroks) %>%
-  by_row(..f = function(x) any(x == 1,
-                               na.rm = FALSE) == TRUE,
-         .collate = "rows",
-         .to = "ever_stroke",
-         .labels = TRUE) %>%
+         r2stroks:r12stroks)
+
+ever_stroke$ever_stroke <- apply(X = ever_stroke,
+                                 MARGIN = 1,
+                                 FUN = function(x) any(x == 1) == TRUE)
+
+ever_stroke <- ever_stroke %>%
   filter(ever_stroke == TRUE) %>%
   select(-ever_stroke)
 
@@ -61,10 +61,9 @@ hrs_respondents <- semi_join(x = hrs_respondents,
 
 # Set export location.
 
-export_path <- paste(root_path,
-                     "/1_hrs_respondents.tsv",
-                     sep = "",
-                     collapse = "")
+export_path <- paste0(root_path,
+                      "/1_hrs_respondents.tsv",
+                      collapse = NULL)
 
 # Export transformed data to tab-separated-values (tsv) file.
 
