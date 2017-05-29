@@ -1,9 +1,8 @@
 # Load packages in order of use.
 
-library(package = rprojroot) # find files in project sub-directories
+library(package = rprojroot) # find files in sub-directories
 library(package = haven)     # import SPSS file
 library(package = dplyr)     # data manipulation
-library(package = purrr)     # functional programming tools
 library(package = readr)     # read tabular data
 
 # Locate raw data.

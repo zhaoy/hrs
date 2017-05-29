@@ -1,13 +1,13 @@
 # Load packages in order of use.
 
-library(package = rprojroot) # find absolute file-path of root directory
-library(package = readr)     # import and export data
+library(package = rprojroot) # find files in sub-directories
+library(package = readr)     # read tabular data
 library(package = stringr)   # string operations
-library(package = dplyr)     # transform data
-library(package = tidyr)     # transform data
+library(package = dplyr)     # data manipulation
+library(package = tidyr)     # tidy data
 library(package = purrr)     # functional programming tools
 
-# Load functions.
+# Load function.
 
 wave <- function(string) {
   string <- str_sub(string = string,
@@ -27,10 +27,9 @@ wave <- function(string) {
 root_path <- find_root(criterion = "README.md",
                        path = ".")
 
-import_path <- paste(root_path,
-                     "/2_hrs_variables.tsv",
-                     sep = "",
-                     collapse = "")
+import_path <- paste0(root_path,
+                      "/2_hrs_variables.tsv",
+                      collapse = NULL)
 
 # Import in-put data.
 
@@ -49,7 +48,7 @@ hrs_variables <- read_tsv(file = import_path,
 
 # Select first-time-stroke interviews:
 # 1) identify first and last interviews
-# 2) stroke in current interviews
+# 2) first interview with stroke in current interview
 # 3) no history of stroke per previous interviews
 # 4) exclude first and last interviews
 
@@ -74,7 +73,7 @@ strok_range <- strok_range %>%
             last_interview = max(strok_wave,
                                  na.rm = FALSE))
 
-# stroke in current interviews
+# first interview with stroke in current interview
 
 strok_interviews <- hrs_variables %>%
   select(hhidpn,
@@ -136,7 +135,9 @@ hrs_interviews <- list(strok_range,
          copy = FALSE)
 
 hrs_interviews$strok_wave <- wave(string = hrs_interviews$strok_wave)
+
 hrs_interviews$stroke_wave_yes <- wave(string = hrs_interviews$stroke_wave_yes)
+
 hrs_interviews$stroke_wave_no <- wave(string = hrs_interviews$stroke_wave_no)
 
 hrs_interviews <- hrs_interviews %>%
@@ -160,10 +161,9 @@ hrs_interviews <- inner_join(x = hrs_variables,
 
 # Set export location.
 
-export_path <- paste(root_path,
-                     "/3_hrs_interviews.tsv",
-                     sep = "",
-                     collapse = "")
+export_path <- paste0(root_path,
+                      "/3_hrs_interviews.tsv",
+                      collapse = NULL)
 
 # Export transformed data to tab-separated-values (tsv) file.
 

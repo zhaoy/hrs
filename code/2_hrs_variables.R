@@ -1,8 +1,8 @@
 # Load packages in order of use.
 
-library(package = rprojroot) # find absolute file-path of root directory
-library(package = readr)     # import and export data
-library(package = dplyr)     # transform data
+library(package = rprojroot) # find files in sub-directories
+library(package = readr)     # read tabular data
+library(package = dplyr)     # data manipulation
 library(package = purrr)     # functional programming tools
 
 # Locate in-put data.
@@ -10,10 +10,9 @@ library(package = purrr)     # functional programming tools
 root_path <- find_root(criterion = "README.md",
                        path = ".")
 
-import_path <- paste(root_path,
-                     "/1_hrs_respondents.tsv",
-                     sep = "",
-                     collapse = "")
+import_path <- paste0(root_path,
+                      "/1_hrs_respondents.tsv",
+                      collapse = NULL)
 
 # Import in-put data.
 
@@ -27,7 +26,7 @@ hrs_respondents <- read_tsv(file = import_path,
                             trim_ws = TRUE,
                             skip = 0,
                             n_max = Inf,
-                            guess_max = 1000,
+                            guess_max = 2300,
                             progress = TRUE)
 
 # Select stroke variables.
@@ -111,10 +110,9 @@ hrs_variables <- list(stroke_vars,
 
 # Set export location.
 
-export_path <- paste(root_path,
-                     "/2_hrs_variables.tsv",
-                     sep = "",
-                     collapse = "")
+export_path <- paste0(root_path,
+                      "/2_hrs_variables.tsv",
+                      collapse = NULL)
 
 # Export transformed data to tab-separated-values (tsv) file.
 
