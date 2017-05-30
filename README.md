@@ -41,12 +41,6 @@ To open in R or [RStudio](https://www.rstudio.com) a R file that is in this repo
 As `makefile.R` runs, ignore these warning messages:
 
 ```
-Warning: 1 parsing failure.
-row  col     expected   actual
-2267 ravetrn an integer NaN
-```
-
-```
 Warning messages:
 
 In ifelse(test = is.na(x = as.numeric(x = string)) == TRUE,
