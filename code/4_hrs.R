@@ -1,10 +1,10 @@
 # Load packages in order of use.
 
-library(package = rprojroot) # find absolute file-path of root directory
-library(package = readr)     # import and export data
+library(package = rprojroot) # find files in sub-directories
+library(package = readr)     # read tabular data
 library(package = stringr)   # string operations
-library(package = dplyr)     # transform data
-library(package = tidyr)     # transform data
+library(package = dplyr)     # data manipulation
+library(package = tidyr)     # tidy data
 library(package = purrr)     # functional programming tools
 
 # Load functions.
@@ -42,10 +42,9 @@ concept <- function(string) {
 root_path <- find_root(criterion = "README.md",
                        path = ".")
 
-import_path <- paste(root_path,
-                     "/3_hrs_interviews.tsv",
-                     sep = "",
-                     collapse = "")
+import_path <- paste0(root_path,
+                      "/3_hrs_interviews.tsv",
+                      collapse = NULL)
 
 # Import in-put data.
 
@@ -79,6 +78,7 @@ dependent_vars <- hrs_interviews %>%
          factor_key = FALSE)
 
 dependent_vars$dependent_concept <- concept(string = dependent_vars$dependent_wave)
+
 dependent_vars$dependent_wave <- wave(string = dependent_vars$dependent_wave)
 
 dependent_vars <- dependent_vars %>%
@@ -87,7 +87,7 @@ dependent_vars <- dependent_vars %>%
          value = dependent_status,
          fill = NA,
          convert = FALSE,
-         drop = TRUE,
+         drop = FALSE,
          sep = NULL)
 
 dependent_vars$iwbeg <- as.Date(x = dependent_vars$iwbeg,
@@ -121,6 +121,7 @@ independent_vars <- hrs_interviews %>%
          factor_key = FALSE)
 
 independent_vars$independent_concept <- concept(string = independent_vars$independent_wave)
+
 independent_vars$independent_wave <- wave(string = independent_vars$independent_wave)
 
 independent_vars <- independent_vars %>%
@@ -153,13 +154,12 @@ comorbidity_vars <- independent_vars %>%
   mutate(bmi_30 = ifelse(test = bmi > 30,
                          yes = 1,
                          no = 0),
-         bmi = NULL) %>%
-  by_row(..f = sum,
-         na.rm = FALSE,
-         .collate = "rows",
-         .to = "comorbidity",
-         .labels = TRUE) %>%
-  mutate(comorbidity_score = comorbidity - hhidpn) %>%
+         bmi = NULL)
+
+comorbidity_vars$comorbidity_score <- rowSums(x = comorbidity_vars,
+                                              na.rm = FALSE) - comorbidity_vars$hhidpn
+
+comorbidity_vars <- comorbidity_vars %>%
   select(hhidpn,
          comorbidity_score)
 
@@ -171,6 +171,7 @@ hrs_variables_respondents <- inner_join(x = dependent_vars,
                                         copy = FALSE,
                                         suffix = c("_last",
                                                    "_stroke")) %>%
+  filter(iwbeg_last != iwbeg_stroke) %>%
   mutate(diff_time = as.numeric(x = difftime(time1 = iwbeg_last,
                                              time2 = iwbeg_stroke,
                                              units = "weeks")) /
@@ -183,10 +184,9 @@ hrs_variables_respondents <- inner_join(x = hrs_variables_respondents,
 
 # Set export location.
 
-export_path <- paste(root_path,
-                     "/hrs.tsv",
-                     sep = "",
-                     collapse = "")
+export_path <- paste0(root_path,
+                      "/hrs.tsv",
+                      collapse = NULL)
 
 # Export transformed data to tab-separated-values (tsv) file.
 
