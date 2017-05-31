@@ -5,7 +5,6 @@ library(package = readr)     # read tabular data
 library(package = stringr)   # string operations
 library(package = dplyr)     # data manipulation
 library(package = tidyr)     # tidy data
-library(package = purrr)     # functional programming tools
 
 # Load functions.
 
@@ -87,7 +86,7 @@ dependent_vars <- dependent_vars %>%
          value = dependent_status,
          fill = NA,
          convert = FALSE,
-         drop = FALSE,
+         drop = TRUE,
          sep = NULL)
 
 dependent_vars$iwbeg <- as.Date(x = dependent_vars$iwbeg,
@@ -165,22 +164,22 @@ comorbidity_vars <- comorbidity_vars %>%
 
 # Join variables and respondents.
 
-hrs_variables_respondents <- inner_join(x = dependent_vars,
-                                        y = independent_vars,
-                                        by = "hhidpn",
-                                        copy = FALSE,
-                                        suffix = c("_last",
-                                                   "_stroke")) %>%
+hrs <- inner_join(x = dependent_vars,
+                  y = independent_vars,
+                  by = "hhidpn",
+                  copy = FALSE,
+                  suffix = c("_last",
+                             "_stroke")) %>%
   filter(iwbeg_last != iwbeg_stroke) %>%
   mutate(diff_time = as.numeric(x = difftime(time1 = iwbeg_last,
                                              time2 = iwbeg_stroke,
                                              units = "weeks")) /
                                              52)
 
-hrs_variables_respondents <- inner_join(x = hrs_variables_respondents,
-                                        y = comorbidity_vars,
-                                        by = "hhidpn",
-                                        copy = FALSE)
+hrs <- inner_join(x = hrs,
+                  y = comorbidity_vars,
+                  by = "hhidpn",
+                  copy = FALSE)
 
 # Set export location.
 
@@ -190,7 +189,7 @@ export_path <- paste0(root_path,
 
 # Export transformed data to tab-separated-values (tsv) file.
 
-write_tsv(x = hrs_variables_respondents,
+write_tsv(x = hrs,
           path = export_path,
           na = "",
           append = FALSE,
