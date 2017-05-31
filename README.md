@@ -1,6 +1,6 @@
 Computer code for a JAHA manuscript.
 
-## Raw Data
+## Raw data
 
 **Publication date**: August 2016
 
