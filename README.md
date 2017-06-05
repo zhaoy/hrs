@@ -30,7 +30,7 @@ Other packages: [rprojroot](https://mran.microsoft.com/package/rprojroot)
 
 2. Download the raw data. From inside the raw data folder, copy-paste or cut-paste `rndhrs_p.sav` to the root directory of this repository.
 
-3. In this repository, run `makefile.R` to generate the analysis data-set (`hrs.tsv`) and analysis report (`hrs.html`). After `makefile.R` runs, `hrs.tsv` and `hrs.html` should appear in the root directory.
+3. In this repository, run `makefile.R` to generate the analysis data-set. After `makefile.R` runs, the analysis data-set (`hrs.tsv`) should appear in the root directory.
 
 To open in R or [RStudio](https://www.rstudio.com) a R file that is in this repository, use the file browser / manager / system of the computer instead of the "File" menu in R or RStudio. Suggested methods:
 
