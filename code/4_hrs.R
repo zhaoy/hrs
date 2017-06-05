@@ -9,6 +9,7 @@ library(package = tidyr)     # tidy data
 # Load functions.
 
 wave <- function(string) {
+  string <- as.character(x = string)
   string <- str_sub(string = string,
                     start = 2,
                     end = 3)
@@ -22,6 +23,7 @@ wave <- function(string) {
 }
 
 concept <- function(string) {
+  string <- as.character(x = string)
   string <- str_sub(string = string,
                     start = 3,
                     end = -1)

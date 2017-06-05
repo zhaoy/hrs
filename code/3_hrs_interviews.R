@@ -10,6 +10,7 @@ library(package = purrr)     # functional programming tools
 # Load function.
 
 wave <- function(string) {
+  string <- as.character(x = string)
   string <- str_sub(string = string,
                     start = 2,
                     end = 3)
@@ -48,7 +49,7 @@ hrs_variables <- read_tsv(file = import_path,
 
 # Select first-time-stroke interviews:
 # 1) identify first and last interviews
-# 2) first interview with stroke in current interview
+# 2) first interview with stroke in that interview
 # 3) no history of stroke per previous interviews
 # 4) exclude first and last interviews
 
@@ -73,7 +74,7 @@ strok_range <- strok_range %>%
             last_interview = max(strok_wave,
                                  na.rm = FALSE))
 
-# first interview with stroke in current interview
+# first interview with stroke in that interview
 
 strok_interviews <- hrs_variables %>%
   select(hhidpn,
@@ -143,7 +144,7 @@ hrs_interviews$stroke_wave_no <- wave(string = hrs_interviews$stroke_wave_no)
 hrs_interviews <- hrs_interviews %>%
   filter(strok_wave > first_interview,
          strok_wave < last_interview) %>%
-  mutate(compare_wave = ifelse(test = (strok_wave > stroke_wave_no) &
+  mutate(compare_wave = ifelse(test = (strok_wave >= stroke_wave_no) &
                                       (strok_wave <= stroke_wave_yes),
                                yes = TRUE,
                                no = FALSE)) %>%
