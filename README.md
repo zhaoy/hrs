@@ -1,4 +1,4 @@
-Computer code for a JAHA manuscript.
+computer code for a manuscript
 
 ## Raw data
 
@@ -22,7 +22,7 @@ Computer code for a JAHA manuscript.
 
 [tidyverse](https://mran.microsoft.com/package/tidyverse) packages: [dplyr](https://mran.microsoft.com/package/dplyr), [haven](https://mran.microsoft.com/package/haven), [purrr](https://mran.microsoft.com/package/purrr), [readr](https://mran.revolutionanalytics.com/package/readr), [stringr](https://mran.microsoft.com/package/stringr), [tidyr](https://mran.revolutionanalytics.com/package/tidyr)
 
-Other packages: [rmarkdown](https://mran.microsoft.com/package/rmarkdown), [rprojroot](https://mran.microsoft.com/package/rprojroot)
+Other packages: [rprojroot](https://mran.microsoft.com/package/rprojroot)
 
 ## Reproducibility
 
