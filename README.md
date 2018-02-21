@@ -2,27 +2,27 @@ instructions for reproducing the data-set of a manuscript
 
 ## Raw data
 
-**Publication date**: August 2016
+**publication date**: August 2016
 
-**Documentation**: [rand.org/labor/aging/dataprod/hrs-data.html](https://www.rand.org/labor/aging/dataprod/hrs-data.html)
+**documentation**: [rand.org/labor/aging/dataprod/hrs-data.html](https://www.rand.org/labor/aging/dataprod/hrs-data.html)
 
-**Log-in**: [https://ssl.isr.umich.edu/hrs/start.php](https://ssl.isr.umich.edu/hrs/start.php)
+**log-in**: [https://ssl.isr.umich.edu/hrs/start.php](https://ssl.isr.umich.edu/hrs/start.php)
 
-**Location**: [https://ssl.isr.umich.edu/hrs/files2.php?versid=34](https://ssl.isr.umich.edu/hrs/files2.php?versid=34)
+**location**: [https://ssl.isr.umich.edu/hrs/files2.php?versid=34](https://ssl.isr.umich.edu/hrs/files2.php?versid=34)
 
-**File name**: randpstata.zip
+**file**: randpstata.zip
 
 ## Software
 
-**Language**: [R](https://www.r-project.org)
+**language**: [R](https://www.r-project.org)
 
-**Version**: 3.4.3
+**version**: 3.4.3
 
-**Packages**:
+**packages**:
 
-[tidyverse](https://mran.microsoft.com/package/tidyverse) packages: [dplyr](https://mran.microsoft.com/package/dplyr), [haven](https://mran.microsoft.com/package/haven), [purrr](https://mran.microsoft.com/package/purrr), [tidyr](https://mran.revolutionanalytics.com/package/tidyr)
+tidyverse packages: [dplyr](https://mran.microsoft.com/package/dplyr), [haven](https://mran.microsoft.com/package/haven), [purrr](https://mran.microsoft.com/package/purrr), [tidyr](https://mran.revolutionanalytics.com/package/tidyr)
 
-Other packages: [rprojroot](https://mran.microsoft.com/package/rprojroot)
+other packages: [rprojroot](https://mran.microsoft.com/package/rprojroot), [zhaoy](https://github.com/zhaoy/zhaoy)
 
 ## Reproducibility
 
