@@ -1,27 +1,35 @@
 # Load packages.
 
 library(package = rprojroot) # find files in sub-directories
-library(package = purrr)     # functional programming tools
+library(package = purrr)     # functional programming
 
 # Locate code.
 
-root_path <- find_root(criterion = "README.md",
-                       path = ".")
+root_path <- rprojroot::find_root(criterion = rprojroot::has_dirname(dirname = "hrs"),
+                                  path = ".")
 
 # Run code.
 
-hrs_code <- c("code/1_hrs_respondents.R",
-              "code/2_hrs_variables.R",
-              "code/3_hrs_interviews.R",
-              "code/4_hrs.R")
+hrs_code <- c("1_hrs.R",
+              "2_hrs.R",
+              "3_hrs.R",
+              "4_hrs.R") %>%
+  purrr::map(.f = function(x) file.path(root_path,
+                                        "code",
+                                        x,
+                                        fsep = "/"))
 
-map(.x = hrs_code,
-    .f = source)
+purrr::map(.x = hrs_code,
+           .f = source)
 
 # Remove intermediate files.
 
-hrs_intermediates <- c("1_hrs_respondents.tsv", # 1_hrs_respondents.R
-                       "2_hrs_variables.tsv",   # 2_hrs_variables.R
-                       "3_hrs_interviews.tsv")  # 3_hrs_interviews.R
+hrs_intermediate <- c("1_hrs.feather",
+                      "2_hrs.feather",
+                      "3_hrs.feather") %>%
+  purrr::map(.f = function(x) file.path(root_path,
+                                        x,
+                                        fsep = "/")) %>%
+  unlist
 
-file.remove(hrs_intermediates)
+file.remove(hrs_intermediate)
