@@ -1,198 +1,172 @@
-# Load packages in order of use.
+# Load packages.
 
-library(package = rprojroot) # find files in sub-directories
-library(package = readr)     # read tabular data
-library(package = stringr)   # string operations
-library(package = dplyr)     # data manipulation
-library(package = tidyr)     # tidy data
+library(package = dplyr) # data manipulation
+library(package = purrr) # functional programming
+library(package = tidyr) # tidy data
+library(package = zhaoy) # convenience functions
 
 # Load functions.
 
-wave <- function(string) {
-  string <- as.character(x = string)
-  string <- str_sub(string = string,
-                    start = 2,
-                    end = 3)
-  string <- ifelse(test = is.na(x = as.numeric(x = string)) == TRUE,
-                   yes = str_sub(string = string,
-                                 start = 1,
-                                 end = 1),
-                   no = string)
-  string <- as.numeric(x = string)
-  return(value = string)
+wave <- function(x) {
+
+  x <- dplyr::case_when(grepl(pattern = "\\d{2}",
+                              x = x,
+                              ignore.case = TRUE) == TRUE ~
+                        substring(text = x,
+                                  first = 2,
+                                  last = 3),
+                        grepl(pattern = "\\d{1}",
+                              x = x,
+                              ignore.case = TRUE) == TRUE ~
+                        substring(text = x,
+                                  first = 2,
+                                  last = 2))
+
+  as.integer(x = x)
+
 }
 
-concept <- function(string) {
-  string <- as.character(x = string)
-  string <- str_sub(string = string,
-                    start = 3,
-                    end = -1)
-  sub_string <- str_sub(string = string,
-                        start = 1,
-                        end = 1)
-  string <- ifelse(test = is.na(x = as.numeric(x = sub_string)) == TRUE,
-                   yes = string,
-                   no = str_sub(string = string,
-                                start = 2,
-                                end = -1))
-  return(value = string)
+concept <- function(x) {
+
+  x_nchar <- nchar(x = x,
+                   type = "chars",
+                   allowNA = FALSE,
+                   keepNA = TRUE)
+
+  dplyr::case_when(grepl(pattern = "\\d{2}",
+                         x = x,
+                         ignore.case = TRUE) == TRUE ~
+                   substring(text = x,
+                             first = 4,
+                             last = x_nchar),
+                   grepl(pattern = "\\d{1}",
+                         x = x,
+                         ignore.case = TRUE) == TRUE ~
+                   substring(text = x,
+                             first = 3,
+                             last = x_nchar))
+
 }
-
-# Locate in-put data.
-
-root_path <- find_root(criterion = "README.md",
-                       path = ".")
-
-import_path <- paste0(root_path,
-                      "/3_hrs_interviews.tsv",
-                      collapse = NULL)
 
 # Import in-put data.
 
-hrs_interviews <- read_tsv(file = import_path,
-                           col_names = TRUE,
-                           col_types = NULL,
-                           locale = default_locale(),
-                           na = "",
-                           quoted_na = TRUE,
-                           comment = "",
-                           trim_ws = TRUE,
-                           skip = 0,
-                           n_max = Inf,
-                           guess_max = 1000,
-                           progress = TRUE)
+hrs <- zhaoy::import_feather(folder = "hrs",
+                             path = "3_hrs.feather")
 
-# Select dependent variables.
+# Organize dependent variables.
 
-dependent_vars <- hrs_interviews %>%
-  select(hhidpn,
-         last_interview,
-         r1iwbeg:r12iwbeg,
-         r2adla:r12adla,
-         r2finea:r12finea,
-         r2grossa:r12grossa) %>%
-  gather(key = dependent_wave,
-         value = dependent_status,
-         r1iwbeg:r12grossa,
-         na.rm = TRUE,
-         convert = FALSE,
-         factor_key = FALSE)
+dependent <- hrs %>%
+  dplyr::select(hhidpn,
+                last_interview,
+                r1iwbeg:r12iwbeg,
+                r2adla:r12adla,
+                r2finea:r12finea,
+                r2grossa:r12grossa) %>%
+  tidyr::gather(key = dependent_wave,
+                value = dependent_status,
+                r1iwbeg:r12grossa,
+                na.rm = TRUE,
+                convert = FALSE,
+                factor_key = FALSE) %>%
+  dplyr::mutate(dependent_concept = concept(x = dependent_wave)) %>%
+  purrr::modify_at(.at = "dependent_wave",
+                   .f = wave) %>%
+  dplyr::filter(dependent_wave == last_interview) %>%
+  tidyr::spread(key = dependent_concept,
+                value = dependent_status,
+                fill = NA,
+                convert = FALSE,
+                drop = TRUE,
+                sep = NULL) %>%
+  purrr::modify_at(.at = "iwbeg",
+                   .f = as.Date,
+                   origin = "1960-01-01")
 
-dependent_vars$dependent_concept <- concept(string = dependent_vars$dependent_wave)
+# Organize independent variables.
 
-dependent_vars$dependent_wave <- wave(string = dependent_vars$dependent_wave)
-
-dependent_vars <- dependent_vars %>%
-  filter(dependent_wave == last_interview) %>%
-  spread(key = dependent_concept,
-         value = dependent_status,
-         fill = NA,
-         convert = FALSE,
-         drop = TRUE,
-         sep = NULL)
-
-dependent_vars$iwbeg <- as.Date(x = dependent_vars$iwbeg,
-                                origin = "1960-01-01")
-
-# Select independent variables.
-
-independent_vars <- hrs_interviews %>%
-  select(hhidpn,
-         stroke_interview,
-         ragender,
-         raracem,
-         r1iwbeg:r12iwbeg,
-         r1agey_b:r12agey_b,
-         r1bmi:r12bmi,
-         r1diab:r12diab,
-         r1heart:r12heart,
-         r1hibp:r12hibp,
-         r1smoken:r12smoken,
-         ends_with(match = "hhres",
-                   ignore.case = TRUE,
-                   vars = current_vars()),
-         ends_with(match = "itot",
-                   ignore.case = TRUE,
-                   vars = current_vars())) %>%
-  gather(key = independent_wave,
-         value = independent_status,
-         r1iwbeg:h12itot,
-         na.rm = TRUE,
-         convert = FALSE,
-         factor_key = FALSE)
-
-independent_vars$independent_concept <- concept(string = independent_vars$independent_wave)
-
-independent_vars$independent_wave <- wave(string = independent_vars$independent_wave)
-
-independent_vars <- independent_vars %>%
-  filter(independent_wave == stroke_interview) %>%
-  spread(key = independent_concept,
-         value = independent_status,
-         fill = NA,
-         convert = FALSE,
-         drop = TRUE,
-         sep = NULL)
-
-independent_vars$iwbeg <- as.Date(x = independent_vars$iwbeg,
-                                  origin = "1960-01-01")
+independent <- hrs %>%
+  dplyr::select(hhidpn,
+                strok_interview,
+                ragender,
+                raracem,
+                r1iwbeg:r12iwbeg,
+                r1agey_b:r12agey_b,
+                r1bmi:r12bmi,
+                r1diab:r12diab,
+                r1heart:r12heart,
+                r1hibp:r12hibp,
+                r1smoken:r12smoken,
+                h1hhres:h12hhres,
+                h1itot:h12itot) %>%
+  tidyr::gather(key = independent_wave,
+                value = independent_status,
+                r1iwbeg:h12itot,
+                na.rm = TRUE,
+                convert = FALSE,
+                factor_key = FALSE) %>%
+  dplyr::mutate(independent_concept = concept(x = independent_wave)) %>%
+  purrr::modify_at(.at = "independent_wave",
+                   .f = wave) %>%
+  dplyr::filter(independent_wave == strok_interview) %>%
+  tidyr::spread(key = independent_concept,
+                value = independent_status,
+                fill = NA,
+                convert = FALSE,
+                drop = TRUE,
+                sep = NULL) %>%
+  purrr::modify_at(.at = "iwbeg",
+                   .f = as.Date,
+                   origin = "1960-01-01")
 
 comorbidity_range <- c(0,
                        1)
 
-comorbidity_vars <- independent_vars %>%
-  select(hhidpn,
-         bmi,
-         diab,
-         heart,
-         hibp,
-         smoken) %>%
-  filter(is.na(x = bmi) == FALSE,
-         diab %in% comorbidity_range,
-         heart %in% comorbidity_range,
-         hibp %in% comorbidity_range,
-         smoken %in% comorbidity_range) %>%
-  mutate(bmi_30 = ifelse(test = bmi > 30,
-                         yes = 1,
-                         no = 0),
-         bmi = NULL)
+comorbidity <- independent %>%
+  dplyr::select(hhidpn,
+                bmi,
+                diab,
+                heart,
+                hibp,
+                smoken) %>%
+  dplyr::filter(is.na(x = bmi) == FALSE,
+                (diab %in% comorbidity_range) == TRUE,
+                (heart %in% comorbidity_range) == TRUE,
+                (hibp %in% comorbidity_range) == TRUE,
+                (smoken %in% comorbidity_range) == TRUE) %>%
+  dplyr::mutate(bmi_30 = case_when(bmi > 30 ~
+                                   1,
+                                   bmi <= 30 ~
+                                   0),
+                bmi = NULL)
 
-comorbidity_vars$comorbidity_score <- rowSums(x = comorbidity_vars,
-                                              na.rm = FALSE) - comorbidity_vars$hhidpn
+comorbidity$comorbidity_score <- rowSums(x = comorbidity,
+                                         na.rm = FALSE) - comorbidity$hhidpn
 
-comorbidity_vars <- comorbidity_vars %>%
-  select(hhidpn,
-         comorbidity_score)
+comorbidity <- comorbidity %>%
+  dplyr::select(hhidpn,
+                comorbidity_score)
 
-# Join variables and respondents.
+# Join dependent and independent variables.
 
-hrs <- inner_join(x = dependent_vars,
-                  y = independent_vars,
-                  by = "hhidpn",
-                  copy = FALSE,
-                  suffix = c("_last",
-                             "_stroke")) %>%
-  filter(iwbeg_last != iwbeg_stroke) %>%
-  mutate(diff_time = as.numeric(x = difftime(time1 = iwbeg_last,
-                                             time2 = iwbeg_stroke,
-                                             units = "weeks")) /
-                                             52)
+hrs <- dplyr::inner_join(x = dependent,
+                         y = independent,
+                         by = "hhidpn",
+                         copy = FALSE,
+                         suffix = c("_last",
+                                    "_stroke")) %>%
+  dplyr::filter(iwbeg_last > iwbeg_stroke) %>%
+  dplyr::mutate(diff_time = as.numeric(x = difftime(time1 = iwbeg_last,
+                                                    time2 = iwbeg_stroke,
+                                                    units = "weeks")) /
+                                                    52)
 
-hrs <- inner_join(x = hrs,
-                  y = comorbidity_vars,
-                  by = "hhidpn",
-                  copy = FALSE)
+hrs <- dplyr::inner_join(x = hrs,
+                         y = comorbidity,
+                         by = "hhidpn",
+                         copy = FALSE)
 
-# Set export location.
+# Export data.
 
-export_path <- paste0(root_path,
-                      "/hrs.tsv",
-                      collapse = NULL)
-
-# Export transformed data to tab-separated-values (tsv) file.
-
-write_tsv(x = hrs,
-          path = export_path,
-          na = "",
-          append = FALSE,
-          col_names = TRUE)
+zhaoy::export_feather(x = hrs,
+                      folder = "hrs",
+                      path = "hrs.feather")
