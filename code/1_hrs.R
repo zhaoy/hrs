@@ -36,7 +36,7 @@ hrs <- hrs %>%
                 raracem %in% c(1,
                                2) == TRUE)
 
-# Include only respondents who, at least during interviews, are stroke survivors.
+# Include only respondents who had stroke data.
 
 stroke_1 <- hrs %>%
   dplyr::select(hhidpn,
