@@ -10,7 +10,7 @@ instructions for reproducing the data-set of a manuscript
 
 **location**: [https://ssl.isr.umich.edu/hrs/files2.php?versid=34](https://ssl.isr.umich.edu/hrs/files2.php?versid=34)
 
-**file**: randpstata.zip
+**.zip file**: randpstata.zip
 
 ## Software
 
@@ -28,7 +28,7 @@ other packages: [rprojroot](https://mran.microsoft.com/package/rprojroot), [zhao
 
 1 Download this repository.
 
-2 Download the raw data. From inside the raw data folder, copy-paste or cut-paste `rndhrs_p.dta` to the root directory of this repository.
+2 Download the raw data. From inside the raw data .zip file, copy-paste or cut-paste `rndhrs_p.dta` to the root directory of this repository.
 
 3 In this repository, run `makefile.R` to build the manuscript data-set. After `makefile.R` runs, the manuscript data-set (`hrs.feather`) should appear in the root directory.
 
