@@ -7,25 +7,6 @@ library(package = zhaoy) # convenience functions
 
 # Load functions.
 
-wave <- function(x) {
-
-  x <- dplyr::case_when(grepl(pattern = "\\d{2}",
-                              x = x,
-                              ignore.case = TRUE) == TRUE ~
-                        substring(text = x,
-                                  first = 2,
-                                  last = 3),
-                        grepl(pattern = "\\d{1}",
-                              x = x,
-                              ignore.case = TRUE) == TRUE ~
-                        substring(text = x,
-                                  first = 2,
-                                  last = 2))
-
-  as.integer(x = x)
-
-}
-
 concept <- function(x) {
 
   x_nchar <- nchar(x = x,
@@ -45,6 +26,25 @@ concept <- function(x) {
                    substring(text = x,
                              first = 3,
                              last = x_nchar))
+
+}
+
+wave <- function(x) {
+
+  x <- dplyr::case_when(grepl(pattern = "\\d{2}",
+                              x = x,
+                              ignore.case = TRUE) == TRUE ~
+                        substring(text = x,
+                                  first = 2,
+                                  last = 3),
+                        grepl(pattern = "\\d{1}",
+                              x = x,
+                              ignore.case = TRUE) == TRUE ~
+                        substring(text = x,
+                                  first = 2,
+                                  last = 2))
+
+  as.integer(x = x)
 
 }
 
@@ -133,14 +133,15 @@ comorbidity <- independent %>%
                 (heart %in% comorbidity_range) == TRUE,
                 (hibp %in% comorbidity_range) == TRUE,
                 (smoken %in% comorbidity_range) == TRUE) %>%
-  dplyr::mutate(bmi_30 = case_when(bmi > 30 ~
-                                   1,
-                                   bmi <= 30 ~
-                                   0),
-                bmi = NULL)
+  dplyr::mutate(bmi_30 = case_when(bmi <= 30 ~
+                                   0,
+                                   bmi > 30 ~
+                                   1))
 
 comorbidity$comorbidity_score <- rowSums(x = comorbidity,
-                                         na.rm = FALSE) - comorbidity$hhidpn
+                                         na.rm = FALSE) -
+                                 comorbidity$hhidpn -
+                                 comorbidity$bmi
 
 comorbidity <- comorbidity %>%
   dplyr::select(hhidpn,
@@ -154,7 +155,7 @@ hrs <- dplyr::inner_join(x = dependent,
                          copy = FALSE,
                          suffix = c("_last",
                                     "_stroke")) %>%
-  dplyr::filter(iwbeg_last > iwbeg_stroke) %>%
+  dplyr::filter(iwbeg_stroke < iwbeg_last) %>%
   dplyr::mutate(diff_time = as.numeric(x = difftime(time1 = iwbeg_last,
                                                     time2 = iwbeg_stroke,
                                                     units = "weeks")) /
