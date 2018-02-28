@@ -78,6 +78,9 @@ dependent <- hrs %>%
                 convert = FALSE,
                 drop = TRUE,
                 sep = NULL) %>%
+  dplyr::filter(is.na(x = adla) == FALSE &
+                is.na(x = finea) == FALSE &
+                is.na(x = grossa) == FALSE) %>%
   purrr::modify_at(.at = "iwbeg",
                    .f = as.Date,
                    origin = "1960-01-01")
@@ -145,7 +148,11 @@ comorbidity$comorbidity_score <- rowSums(x = comorbidity,
 
 comorbidity <- comorbidity %>%
   dplyr::select(hhidpn,
-                comorbidity_score)
+                comorbidity_score) %>%
+  purrr::modify_at(.at = "hhidpn",
+                   .f = as.character) %>%
+  purrr::modify_at(.at = "comorbidity_score",
+                   .f = as.integer)
 
 # Join dependent and independent variables.
 
@@ -156,6 +163,25 @@ hrs <- dplyr::inner_join(x = dependent,
                          suffix = c("_last",
                                     "_stroke")) %>%
   dplyr::filter(iwbeg_stroke < iwbeg_last) %>%
+  purrr::modify_at(.at = c("hhidpn",
+                           "last_interview",
+                           "dependent_wave",
+                           "strok_interview",
+                           "independent_wave"),
+                   .f = as.character) %>%
+  purrr::modify_at(.at = c("adla",
+                           "finea",
+                           "grossa",
+                           "ragender",
+                           "raracem",
+                           "agey_b",
+                           "diab",
+                           "heart",
+                           "hhres",
+                           "hibp",
+                           "smoken",
+                           "comorbidity_score"),
+                   .f = as.integer) %>%
   dplyr::mutate(diff_time = as.numeric(x = difftime(time1 = iwbeg_last,
                                                     time2 = iwbeg_stroke,
                                                     units = "weeks")) /

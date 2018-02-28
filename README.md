@@ -20,7 +20,7 @@ instructions for reproducing the data-set of a manuscript
 
 **packages**:
 
-tidyverse packages: [dplyr](https://mran.microsoft.com/package/dplyr), [haven](https://mran.microsoft.com/package/haven), [purrr](https://mran.microsoft.com/package/purrr), [tidyr](https://mran.revolutionanalytics.com/package/tidyr)
+[tidyverse](https://github.com/tidyverse) packages: [dplyr](https://mran.microsoft.com/package/dplyr), [haven](https://mran.microsoft.com/package/haven), [purrr](https://mran.microsoft.com/package/purrr), [tidyr](https://mran.revolutionanalytics.com/package/tidyr)
 
 other packages: [rprojroot](https://mran.microsoft.com/package/rprojroot), [zhaoy](https://github.com/zhaoy/zhaoy)
 
